@@ -1,0 +1,1 @@
+from .ghdl import ghdl
