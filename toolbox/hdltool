@@ -1,3 +1,31 @@
 #!python3
 
 import argparse 
+
+from libs import ghdl
+from libs import StoreTrueOrValue
+
+def main():
+    parser = argparse.ArgumentParser(description="HDL handler.")
+    parser.add_argument('-p', '--project',               default=False, type=str,                          help='Set project descriptor.')
+    parser.add_argument('-a', '--analyze',   const=True, default=False, type=str, action=StoreTrueOrValue, help='Analyze files of target ptoject.')
+    parser.add_argument('-e', '--elaborate', const=True, default=False, type=str, action=StoreTrueOrValue, help='Elaborate design for target top.')
+    parser.add_argument('-s', '--simulate',  const=True, default=False, type=str, action=StoreTrueOrValue, help='Run simulation for starget top.')
+    args = parser.parse_args()
+
+    top = None
+    if isinstance(args.elaborate, str):
+        top = args.elaborate
+    if isinstance(args.simulate, str):
+        top = args.simulate
+
+    tool = ghdl( args.project )
+    if args.analyze:
+        tool.analyze( args.analyze )
+    if args.elaborate:
+        tool.elaborate( top )
+    if args.simulate:
+        tool.simulate( top )
+
+if __name__=="__main__":
+    main()
