@@ -1,13 +1,20 @@
+import os
+
 from subprocess import Popen, PIPE
+from pathLib import Path
 
 class handler:
     
     def __init__ ( self, tool ):
+        if 'PRJPATH' in os.environ:
+            self.wdir = Path(os.environ['PRJPATH']) / 'wdir' / tool
         self.tool = tool
         return
 
     def launch ( self, flags )
-        cmd = f"{self.tool} {flags}"
+        pwd = os.getcwd()
+        os.chdir(wdir)
+        cmd = f"{self.name} {flags}"
         print (f" CMD ::: {cmd}")
         try:
             process = Popen(cmd,stdout=PIPE,stderr=PIPE,shell=True)
@@ -21,4 +28,5 @@ class handler:
         except Exception as e:
             print(f"An error occurred: {e}")
             return_code = None
+        os.chdir(pwd)
         return return_code
