@@ -1,20 +1,24 @@
 import os
 
 from subprocess import Popen, PIPE
-from pathLib import Path
+from pathlib import Path
 
 class handler:
     
     def __init__ ( self, tool ):
-        if 'PRJPATH' in os.environ:
-            self.wdir = Path(os.environ['PRJPATH']) / 'wdir' / tool
+        if 'PRJ_PATH' in os.environ:
+            self.wdir = Path(os.environ['PRJ_PATH']) / 'wdir' / tool
+        else:
+            print("Error: project file not sourced.")
+        if not os.path.exists(self.wdir):
+            os.makedirs(self.wdir)
         self.tool = tool
         return
 
-    def launch ( self, flags )
+    def launch ( self, flags ):
         pwd = os.getcwd()
-        os.chdir(wdir)
-        cmd = f"{self.name} {flags}"
+        os.chdir(self.wdir)
+        cmd = f"{self.tool} {flags}"
         print (f" CMD ::: {cmd}")
         try:
             process = Popen(cmd,stdout=PIPE,stderr=PIPE,shell=True)

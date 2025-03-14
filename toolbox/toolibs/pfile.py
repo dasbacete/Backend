@@ -1,12 +1,13 @@
 import yaml
+import os
 
-from pathLib import Path
+from pathlib import Path
 
 class pfile:
     
     def __init__ ( self, pfile_path=None ):    
         self.project_name = Path(pfile_path).name
-        self.pfile_path = Path(pfile_path).parent 
+        self.pfile_path = os.path.abspath(Path(pfile_path).parent)
         self.pdata = None
         if pfile_path:
             with open( pfile_path, 'r' ) as pff:
@@ -14,10 +15,10 @@ class pfile:
 
     def list_sources( self ):
         srcs = [] 
-        if pdata is not None and 'srcs' in pdata:
+        if self.pdata is not None and 'srcs' in self.pdata:
             ## Common dependencies
             for k in self.pdata['srcs']:
-                if k is not 'pkg' and k is not 'rtl':
+                if k != 'pkg' and k != 'rtl':
                     if 'pkg' in self.pdata['srcs'][k]:
                         srcs += [ f"{self.pfile_path}/{k}/pkg/{file}" for file in self.pdata['srcs'][k]['pkg'] ]
                     if 'rtl' in self.pdata['srcs'][k]:
