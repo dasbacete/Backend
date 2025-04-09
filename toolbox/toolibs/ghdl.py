@@ -1,3 +1,5 @@
+import os
+
 from . import handler
 from . import pfile
 
@@ -6,9 +8,9 @@ class ghdl_handler ( handler.handler, pfile.pfile ):
     def __init__ ( self, pff ): 
         handler.handler.__init__(self, tool='ghdl')
         pfile.pfile.__init__( self, pfile_path=pff )
-        self.analyze_flags = "--std=08 --ieee=standard"
+        self.analyze_flags   = "--std=08 --ieee=standard"
         self.elaborate_flags = "--std=08"
-        self.simulate_flags = ""
+        self.simulate_flags  = ""
         
     def analyze ( self, pfile_path=None, analyze_flags=None ):
         srcs = None
@@ -38,6 +40,13 @@ class ghdl_handler ( handler.handler, pfile.pfile ):
             if top_unit in self.sim:
                 if 'sim_flags' in self.sim[top_unit]:
                     sim_flags += f"{self.sim[top_unit]['sim_flags']}"
+                if 'cosim' in self.sim[top_unit]:
+                    sim_flags += f" --vpi=$(cocotb-config --lib-name-path vpi ghdl)"
+                    os.environ['PYTHONPATH']    = f":{self.pfile_path}/cosim"
+                    os.environ['TOPLEVEL']      = top_unit
+                    os.environ['TOPLEVEL_LANG'] = 'vhdl' 
+                    os.environ['MODULE']        = self.sim[top_unit]['cosim']
+                    os.environ['TESTCASE']      = ''
         if simulate_flags is not None:
             sim_flags = f"{simulate_flags}"
         flags = f"-r {self.simulate_flags} {top_unit} {sim_flags}"
