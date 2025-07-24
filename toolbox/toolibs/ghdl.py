@@ -21,7 +21,7 @@ class ghdl_handler ( handler.handler, pfile.pfile ):
         else:
             srcs = self.list_sources()
         filelist = ' '.join(srcs)
-        flags = f"-a {self.analyze_flags} {filelist}"
+        flags = f"-a {self.analyze_flags} -frelaxed {filelist}"
         return self.launch(flags)
 
     def elaborate ( self, top=None, elaborate_flags=None ):
