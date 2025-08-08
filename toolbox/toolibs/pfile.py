@@ -24,7 +24,7 @@ class pfile:
             # load deps
             if 'deps' in pdata:
                 for dep in pdata['deps']:
-                    deps_pff = pfile( self.pfile_path / Path(dep) )
+                    deps_pff = pfile( self.pfile_path / ".." / Path(dep) )
                     if deps_pff.pkg:
                         self.pkg = self.pkg + deps_pff.pkg
                     if deps_pff.rtl:
@@ -36,12 +36,12 @@ class pfile:
                 self.top = pdata['top']
             # load current 
             if 'pkg' in pdata['srcs']:
-                self.pkg += [ f"{self.pfile_path}/pkg/{file}" for file in pdata['srcs']['pkg'] ]
+                self.pkg += [ f"{self.pfile_path}/../src/pkg/{file}" for file in pdata['srcs']['pkg'] ]
             if 'rtl' in pdata['srcs']:
-                self.rtl += [ f"{self.pfile_path}/rtl/{file}" for file in pdata['srcs']['rtl'] ]
+                self.rtl += [ f"{self.pfile_path}/../src/rtl/{file}" for file in pdata['srcs']['rtl'] ]
             if 'sim' in pdata:
                 for k in pdata['sim']:
-                    pdata['sim'][k]['tb'] = f"{self.pfile_path}/sim/{pdata['sim'][k]['tb']}"
+                    pdata['sim'][k]['tb'] = f"{self.pfile_path}/../src/sim/{pdata['sim'][k]['tb']}"
                 self.sim = self.sim | pdata['sim']
     
     def list_sources( self ):
