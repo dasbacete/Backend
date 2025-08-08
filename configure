@@ -1,0 +1,68 @@
+#!/bin/bash
+
+SCRIPT_PATH="$(realpath "$0")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+
+export PRJ_PATH=$SCRIPT_DIR/..
+
+if [ "$#" -ne 0 ]; then
+    for arg in "$@"; do
+         case "$arg" in
+            build) #### Build proj structure
+                if [ ! -d $PRJ_PATH/src ]; then
+                    echo "src not found, creating it ..."  
+                    mkdir $PRJ_PATH/src
+                fi
+                if [ ! -d $PRJ_PATH/src/rtl ]; then
+                    echo "rtl not found, creating it ..."  
+                    mkdir $PRJ_PATH/src/rtl
+                fi
+                if [ ! -d $PRJ_PATH/src/sim ]; then
+                    echo "src not found, creating it ..."  
+                    mkdir $PRJ_PATH/src/sim
+                fi
+                if [ ! -d $PRJ_PATH/targets ]; then
+                    echo "src not found, creating it ..."  
+                    mkdir $PRJ_PATH/targets
+                fi
+            ;;
+            deps) ## Install dependencies
+                python3 -m pip &> /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "Pip not installed, installing ..."
+                    sudo apt-get update
+                    sudo apt-get install python3-pip
+                fi
+                python3 -m venv -h &> /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "Venv not installed, installing ..."
+                    sudo apt-get update
+                    sudo apt-get install python3-venv
+                fi
+                if [ ! -d $PRJ_PATH/wenv ]; then
+                    python3 -m venv wenv
+                fi
+                source $PRJ_PATH/wenv/bin/activate
+                python3 -m argparse &> /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "Arparse not installed, installing ..."  
+                    pip install argparse
+                fi
+                python3 -m pyaml -h &> /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "Pyaml not installed, installing ..."  
+                    pip install argparse
+                fi
+                source $PRJ_PATH/wenv/bin/deactivate
+            ;;
+            *)
+                echo "Unknown argument: $arg"
+            ;;
+         esac
+
+    done
+fi
+
+# Env variables
+export PATH=$PATH:$PRJ_PATH/Backend/toolbox
+source $PRJ_PATH/wenv/bin/activate
