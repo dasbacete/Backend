@@ -53,7 +53,7 @@ if [ "$#" -ne 0 ]; then
                     echo "Pyaml not installed, installing ..."  
                     pip install argparse
                 fi
-                source $PRJ_PATH/wenv/bin/deactivate
+                deactivate
             ;;
             *)
                 echo "Unknown argument: $arg"
@@ -65,4 +65,6 @@ fi
 
 # Env variables
 export PATH=$PATH:$PRJ_PATH/Backend/toolbox
-source $PRJ_PATH/wenv/bin/activate
+if [ -d $PRJ_PATH/wenv ]; then
+    source $PRJ_PATH/wenv/bin/activate
+fi
