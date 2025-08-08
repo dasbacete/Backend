@@ -24,7 +24,7 @@ class pfile:
             # load deps
             if 'deps' in pdata:
                 for dep in pdata['deps']:
-                    deps_pff = pfile( self.pfile_path / ".." / Path(dep) )
+                    deps_pff = pfile( self.pfile_path / Path("..") / Path(dep) )
                     if deps_pff.pkg:
                         self.pkg = self.pkg + deps_pff.pkg
                     if deps_pff.rtl:
