@@ -41,7 +41,7 @@ class pfile:
                 self.rtl += [ f"{self.pfile_path}/../src/rtl/{file}" for file in pdata['srcs']['rtl'] ]
             if 'sim' in pdata:
                 for k in pdata['sim']:
-                    pdata['sim'][k]['tb'] = f"{self.pfile_path}/../src/sim/{pdata['sim'][k]['tb']}"
+                    pdata['sim'][k]['tb'] = f"{self.pfile_path}/../src/sim/tb/{pdata['sim'][k]['tb']}"
                 self.sim = self.sim | pdata['sim']
     
     def list_sources( self ):

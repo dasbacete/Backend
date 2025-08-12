@@ -36,3 +36,9 @@ deps: <list of paths to other project descriptors>
 - argparse
 - Pyaml
 - ghdl 5.0 or newer
+
+## ToDo
+- Integrate Vivado Simulator
+- It would be nice to separate sim function from cocotb simulation
+- Backend flow with at least one tool?
+- Veification flow

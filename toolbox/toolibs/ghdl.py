@@ -42,7 +42,7 @@ class ghdl_handler ( handler.handler, pfile.pfile ):
                     sim_flags += f"{self.sim[top_unit]['sim_flags']}"
                 if 'cosim' in self.sim[top_unit]:
                     sim_flags += f" --vpi=$(cocotb-config --lib-name-path vpi ghdl)"
-                    os.environ['PYTHONPATH']    = f":{self.pfile_path}/cosim"
+                    os.environ['PYTHONPATH']    = f":{self.pfile_path}/../src/sim/cocotb"
                     os.environ['TOPLEVEL']      = top_unit
                     os.environ['TOPLEVEL_LANG'] = 'vhdl' 
                     os.environ['MODULE']        = self.sim[top_unit]['cosim']
