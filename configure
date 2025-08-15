@@ -51,7 +51,7 @@ if [ "$#" -ne 0 ]; then
                 python3 -m pyaml -h &> /dev/null
                 if [ $? -ne 0 ]; then
                     echo "Pyaml not installed, installing ..."  
-                    pip install argparse
+                    pip install pyaml
                 fi
                 deactivate
             ;;
