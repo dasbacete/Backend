@@ -1,2 +1,3 @@
 from .ghdl import ghdl_handler
-from .StoreTrueOrValue import StoreTrueOrValue
+from .utils import StoreTrueOrValue
+from .utils import process_flags  

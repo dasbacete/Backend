@@ -11,16 +11,22 @@ class pfile:
         self.top          = None
         self.pkg          = []
         self.rtl          = []
-        self.sim          = dict() 
+        self.sim          = dict()
+        self.stageXflags  = dict()  
         if pfile_path:
             ## Location
             self.project_name = Path(pfile_path).name
-            self.pfile_path = os.path.abspath(Path(pfile_path).parent)
+            self.pfile_path   = os.path.abspath(Path(pfile_path).parent)
             # load pfile
             pdata = None
             if pfile_path:
                 with open( pfile_path, 'r' ) as pff:
                     pdata = yaml.safe_load( pff )
+            
+            # load stage flags 
+            if 'flags' in pdata:
+                self.stageXflags  = pdata['flags'] 
+            
             # load deps
             if 'deps' in pdata:
                 for dep in pdata['deps']:

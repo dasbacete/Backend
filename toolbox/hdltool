@@ -3,25 +3,20 @@
 import argparse 
 
 from toolibs import ghdl_handler
-from toolibs import StoreTrueOrValue
-def parse_unk(list_of_unk_args):
-    args = ''
-    for arg in list_of_unk_args:
-        args += f"{arg}"
-    return args
+from toolibs.utils import StoreTrueOrValue
 
 def main():
     parser = argparse.ArgumentParser(description="HDL handler.")
-    parser.add_argument('-p', '--project',   nargs='?',             default=False, type=str,                          help='Set project descriptor.')
+    parser.add_argument('-p', '--project',   nargs='?',              default=False, type=str,                          help='Set project descriptor.')
     parser.add_argument('-a', '--analyze',   nargs='?', const=False, default=False, type=str, action=StoreTrueOrValue, help='Analyze files of target ptoject.')
-    parser.add_argument('-e', '--elaborate', nargs='?', const=True, default=False, type=str, action=StoreTrueOrValue, help='Elaborate design for target top.')
-    parser.add_argument('-s', '--simulate',  nargs='?', const=True, default=False, type=str, action=StoreTrueOrValue, help='Run simulation for starget top.')
-    args, unknown = parser.parse_known_args()
+    parser.add_argument('-A', '--argsA',     nargs='?',              default=[],              action='append',         help='Extra arguments for analyze stage')
+    parser.add_argument('-e', '--elaborate', nargs='?', const=True,  default=False, type=str, action=StoreTrueOrValue, help='Elaborate design for target top.')
+    parser.add_argument('-E', '--argsE',     nargs='?',              default=[],              action='append',         help='Extra arguments for elaborate stage')
+    parser.add_argument('-s', '--simulate',  nargs='?', const=True,  default=False, type=str, action=StoreTrueOrValue, help='Run simulation for starget top.')
+    parser.add_argument('-S', '--argsS',     nargs='?',              default=[],              action='append',         help='Extra arguments for simlate stage')
     
-    unk_args = None
-    if unknown:
-        unk_args= parse_unk(unknown)
-
+    args, unknown = parser.parse_known_args()
+         
     top = None
     if isinstance(args.elaborate, str):
         top = args.elaborate
@@ -29,12 +24,13 @@ def main():
         top = args.simulate
 
     tool = ghdl_handler( args.project )
+
     if 'analyze' in args:
-        tool.analyze( args.analyze, unk_args )
-    if args.elaborate:
-        tool.elaborate( top, unk_args )
-    if args.simulate:
-        tool.simulate( top, unk_args )
+        tool.analyze( args.analyze, args.argsA )
+    if 'elaborate' in args:
+        tool.elaborate( top, args.argsE )
+    if 'simulate' in args:
+        tool.simulate( top, args.argsS )
 
 if __name__=="__main__":
     main()
